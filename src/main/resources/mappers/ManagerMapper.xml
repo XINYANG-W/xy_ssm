@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xy.mapper.ManagerMapper">
+
+    <insert id="addManager" parameterType="com.xy.entity.Manager">
+
+    insert into MANAGER(MNAME,MPASS) values (#{mname},#{mpass})
+
+    </insert>
+
+    <select id="queryBy" parameterType="string" resultType="com.xy.entity.Manager">
+        select * from MANAGER where MNAME=#{mname}
+    </select>
+
+
+</mapper>

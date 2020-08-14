@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xy.mapper.PsalesMapper">
+
+<select id="selSales" resultType="com.xy.entity.Psales">
+    select * from psales
+</select>
+    <insert id="addPsales" >
+        insert into psales (pmonth,pnum,tid)
+        <foreach collection="list" item="psales"  separator="union all">
+            (select
+
+            #{psales.pmonth,jdbcType=VARCHAR},
+                #{psales.pnum,jdbcType=VARCHAR},
+            #{psales.tid,jdbcType=INTEGER}
+            from dual)
+
+        </foreach>
+    </insert>
+
+    <select id="PsalesCurrentMonth" resultType="map">
+    select * from psales,team where pmonth=#{substring} AND TEAM.TID=PSALES.TID
+</select>
+
+    <select id="queryTeamMember_one" resultType="map">
+        select * from groupteam where TID=#{i}
+    </select>
+
+    <update id="RemoveMemeber" parameterType="int" >
+        update GROUPTEAM set tid=0 where gid=#{gid}
+    </update>
+
+    <select id="queryAllTeam" resultType="map">
+        select * from TEAM
+    </select>
+
+    <update id="UpdateTeam" parameterType="int" >
+        update GROUPTEAM set tid=#{tid} where gid=#{gid}
+    </update>
+    
+    <delete id="delGid" parameterType="int">
+        delete from GROUPTEAM where  gid=#{gid}
+    </delete>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xy.mapper.StudentMapper">
+
+
+    <select id="selstudent"  resultType="com.xy.entity.Student">
+        select * from stutab
+        
+    </select>
+
+    <delete id="delstudent" parameterType="int">
+        delete from stutab where sid=#{sid}
+    </delete>
+
+    <select id="queryBysid"  resultType="com.xy.entity.Student" parameterType="int">
+        select * from stutab where sid=${sid}
+
+    </select>
+
+    <update id="updatestudent" parameterType="com.xy.entity.Student">
+      update stutab set sname=#{sname} where sid=#{sid}
+    </update>
+
+    <insert id="insertstudent" parameterType="string">
+
+        insert into stutab values (SID_STUTAB_SEQ.nextVal,#{sname})
+
+    </insert>
+
+
+    <insert id="addStudent" >
+        insert into stutab (SNAME,SCORE)
+        <foreach collection="list" item="student"  separator="union all">
+            (select
+
+            #{student.sname,jdbcType=VARCHAR},
+            #{student.score,jdbcType=VARCHAR}
+            from dual)
+
+        </foreach>
+    </insert>
+
+    <insert id="addStudents" parameterType="com.xy.entity.Student">
+        insert into STUDENTS values (SID_STUDENTS_SEQ.nextVal,#{sname},#{score})
+    </insert>
+
+    <select id="selstudentYou" resultType="int">
+        select count(*) from STUTAB where score>=90
+    </select>
+
+    <select id="selstudentLiang" resultType="int">
+        select count(*) from STUTAB where score>=80 and SCORE &lt; 90
+    </select>
+
+    <select id="selstudentCha" resultType="int">
+        select count(*) from STUTAB where score &lt; 60
+    </select>
+    <select id="selstudentJige" resultType="int">
+        select count(*) from STUTAB where (score>=60) and (score &lt; 80)
+    </select>
+
+</mapper>
